@@ -13,21 +13,21 @@
 
 
 
-**Chipdeals-momo-api** is a Mobile Money API that allows you to build a quick, simple and excellent payment experience in your web and native app.This the official **Php laravel library**
+**Chipdeals-momo-api** is a Mobile Money API that allows you to build a quick, simple and excellent payment experience in your web and native app.This the official **Php library**
 
 
 
 You can **[request payment](#Collect-Money)** and **[send money](#Disburse-Money)** to any **mobile money wallet**
 
-# Requirements
-
-*Laravel 8 or higher*
 
 <br/>
 
 # Installation
+download [chipdeals-mobile-money-api.php](https://raw.githubusercontent.com/Chipdeals/mobile-money-api-php/master/chipdeals-mobile-money-api.php)
+
+Require the downloaded file
 ```bash
-composer require chipdeals/momo-api
+require_once("path/to/chipdeals-mobile-money-api.php");
 ```
 
 <br/>
@@ -37,7 +37,7 @@ composer require chipdeals/momo-api
 **Initialize Chipdeals Momo API with your API Key ([*Get apikey here*](#Contact-us)) and start**
 
 ```php=
-$momo = new \Chipdeals\MomoApi\Momo();
+$momo = new Momo();
 $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 
 //Collect 500 XOF from the +22951010200 Mobile Money wallet.
@@ -78,7 +78,7 @@ The package needs to be configured with your **account's API key**, which is ava
 For example to request 2000 XOF from the ***+22951010200*** Mobile Money wallet, the following code can be used
 
 ```php=
-$momo = new \Chipdeals\MomoApi\Momo();
+$momo = new Momo();
 $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 
 $collection = $momo
@@ -121,7 +121,7 @@ echo "<br/>" . $collection->getReference();
 You can also send 2000 XOF to the ***+22951010200*** Mobile Money wallet, with the following code
 
 ```php=
-$momo = new \Chipdeals\MomoApi\Momo();
+$momo = new Momo();
 $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 
 $deposit = $momo
@@ -160,7 +160,7 @@ Get status of a transaction of reference `dd1e2d17-5c21-4964-b58d-198fd2aac150`
 
 
 ```php=
-$momo = new \Chipdeals\MomoApi\Momo();
+$momo = new Momo();
 $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 
 $reference = "ba32a171-cbea-45fd-8848-ac5b77580be3"
@@ -246,7 +246,7 @@ Array
 Get your Chipdeals account's balance
 
 ```php=
-$momo = new \Chipdeals\MomoApi\Momo();
+$momo = new Momo();
 $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 
 $balances =  $momo->getBalances();
