@@ -58,7 +58,7 @@ class Private_Chipdeals_MomoApi_Class_GetBalances
 
 
 /**
- * Balance/Private_Chipdeals_MomoApi_Class_BalanceController.php
+ * Balance/BalanceController.php
  */
 class Private_Chipdeals_MomoApi_Class_BalanceController
 {
@@ -78,7 +78,7 @@ class Private_Chipdeals_MomoApi_Class_BalanceController
 
 
 /**
- * Balance/Private_Chipdeals_MomoApi_Class_BalanceData.php
+ * Balance/BalanceData.php
  */
 class Private_Chipdeals_MomoApi_Class_BalanceData
 {
@@ -158,7 +158,7 @@ class Private_Chipdeals_MomoApi_Class_BalanceData
 
 
 /**
- * Balance/Private_Chipdeals_MomoApi_Class_BalanceResponse.php
+ * Balance/BalanceResponse.php
  */
 class Private_Chipdeals_MomoApi_Class_BalanceResponse
 {
@@ -202,7 +202,7 @@ class Private_Chipdeals_MomoApi_Class_BalanceResponse
 
 
 /**
- * Collection/UseCases/Private_Chipdeals_MomoApi_Class_Collect.php
+ * Collection/UseCases/Collect.php
  */
 class Private_Chipdeals_MomoApi_Class_Collect
 {
@@ -227,7 +227,7 @@ class CollectionController
 
 
 /**
- * Collection/Private_Chipdeals_MomoApi_Class_CollectionExecution.php
+ * Collection/CollectionExecution.php
  */
 class Private_Chipdeals_MomoApi_Class_CollectionExecution
 {
@@ -256,7 +256,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionExecution
 
 
 /**
- * Collection/Private_Chipdeals_MomoApi_Class_CollectionRequest.php
+ * Collection/CollectionRequest.php
  */
 class Private_Chipdeals_MomoApi_Class_CollectionRequest
 {
@@ -312,7 +312,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
 
 
 /**
- * Deposit/UseCases/Private_Chipdeals_MomoApi_Class_SendDeposit.php
+ * Deposit/UseCases/SendDeposit.php
  */
 class Private_Chipdeals_MomoApi_Class_SendDeposit
 {
@@ -338,7 +338,7 @@ class DepositController
 
 
 /**
- * Deposit/Private_Chipdeals_MomoApi_Class_DepositExecution.php
+ * Deposit/DepositExecution.php
  */
 class Private_Chipdeals_MomoApi_Class_DepositExecution
 {
@@ -368,7 +368,7 @@ class Private_Chipdeals_MomoApi_Class_DepositExecution
 
 
 /**
- * Deposit/Private_Chipdeals_MomoApi_Class_DepositRequest.php
+ * Deposit/DepositRequest.php
  */
 class Private_Chipdeals_MomoApi_Class_DepositRequest
 {
@@ -415,7 +415,7 @@ class Private_Chipdeals_MomoApi_Class_DepositRequest
 
 
 /**
- * Transaction/UseCases/Private_Chipdeals_MomoApi_Class_GetStatus
+ * Transaction/UseCases/GetStatus
  */
 class Private_Chipdeals_MomoApi_Class_GetStatus
 {
@@ -428,7 +428,7 @@ class Private_Chipdeals_MomoApi_Class_GetStatus
 
 
 /**
- * Transaction/Private_Chipdeals_MomoApi_Class_TransactionController.php
+ * Transaction/TransactionController.php
  */
 class Private_Chipdeals_MomoApi_Class_TransactionController
 {
@@ -443,7 +443,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionController
 }
 
 /**
- * Transaction/Private_Chipdeals_MomoApi_Class_TransactionData.php
+ * Transaction/TransactionData.php
  */
 class Private_Chipdeals_MomoApi_Class_TransactionData
 {
@@ -691,7 +691,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
 
 
 /**
- * Transaction/Private_Chipdeals_MomoApi_Class_TransactionResponse.php
+ * Transaction/TransactionResponse.php
  */
 class Private_Chipdeals_MomoApi_Class_TransactionResponse
 {
@@ -815,7 +815,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
 
 
 /**
- * Utils/Private_Chipdeals_MomoApi_Class_BalanceUtils.php
+ * Utils/BalanceUtils.php
  */
 class Private_Chipdeals_MomoApi_Class_BalanceUtils
 {
@@ -849,7 +849,7 @@ class Private_Chipdeals_MomoApi_Class_BalanceUtils
 
 
 /**
- * Utils/Private_Chipdeals_MomoApi_Class_CollectionUtils.php
+ * Utils/CollectionUtils.php
  */
 class Private_Chipdeals_MomoApi_Class_CollectionUtils
 {
@@ -955,7 +955,7 @@ class Private_Chipdeals_MomoApi_Class_DepositUtils
 
 
 /**
- * Utils/Private_Chipdeals_MomoApi_Class_Network.php
+ * Utils/Network.php
  */
 class Private_Chipdeals_MomoApi_Class_Network
 {
@@ -963,7 +963,7 @@ class Private_Chipdeals_MomoApi_Class_Network
     {
         return Private_Chipdeals_MomoApi_Class_Network::execRequest(function ($url, $body) {
             $bodyString = json_encode($body);
-            $requestUrl = $url . "&body=" . urlencode($bodyString);
+            $requestUrl = $url . "&useOnlyStatusCode200=true&body=" . urlencode($bodyString);
 
             $jsonResponse = file_get_contents($requestUrl);
             return $jsonResponse;
@@ -973,7 +973,7 @@ class Private_Chipdeals_MomoApi_Class_Network
     static public function sendGetRequest($url)
     {
         return Private_Chipdeals_MomoApi_Class_Network::execRequest(function ($url) {
-            $requestUrl = $url;
+            $requestUrl = $url. "&useOnlyStatusCode200=true";
             $jsonResponse = file_get_contents($requestUrl);
             return $jsonResponse;
         }, $url);
@@ -1000,7 +1000,7 @@ class Private_Chipdeals_MomoApi_Class_Network
         $response = [
             "statusCode" => $errorCode,
             "message" => "An error occured",
-            "data" => responseData
+            "data" => $responseData
         ];
 
         if ($isError) return $response;
@@ -1014,7 +1014,7 @@ class Private_Chipdeals_MomoApi_Class_Network
 
 
 /**
- * Utils/Private_Chipdeals_MomoApi_Class_TransactionUtils.php
+ * Utils/TransactionUtils.php
  */
 class Private_Chipdeals_MomoApi_Class_TransactionUtils
 {
