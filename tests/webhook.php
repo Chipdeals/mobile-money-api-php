@@ -25,4 +25,5 @@ echo $transaction->getStatusCode() . "<br/>";
 echo $transaction->getStartTimestampInSecond() . "<br/>";
 echo $transaction->getEndTimestampInSecond() . "<br/>";
 echo $transaction->checkIsCollection() . "<br/>";
+echo $transaction->getOperatorReference() . "<br/>";
 print_r($transaction->getArray());

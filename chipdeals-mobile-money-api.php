@@ -262,14 +262,14 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
 {
 
     private $collection;
-    private $Private_Chipdeals_MomoApi_Class_collectionUtils;
+    private $collectionUtils;
 
-    function __construct($apiKey, $Private_Chipdeals_MomoApi_Class_collectionUtils)
+    function __construct($apiKey, $collectionUtils)
     {
         $this->collection = new Private_Chipdeals_MomoApi_Class_TransactionData();
         $this->collection->setApiKey($apiKey);
         $this->collection->setIsCollection(true);
-        $this->Private_Chipdeals_MomoApi_Class_collectionUtils = $Private_Chipdeals_MomoApi_Class_collectionUtils;
+        $this->collectionUtils = $collectionUtils;
     }
 
 
@@ -288,6 +288,15 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
         $this->collection->setPhoneNumber($phoneNumber);
         return $this;
     }
+    public function withWave($withWave = true)
+    {
+        $this->collection->setIsWave($withWave);
+    }
+    public function setFee($fee, $userSupportAllFees = false)
+    {
+        $this->collection->setFee($fee);
+        $this->collection->setMerchantSupportFee(!$userSupportAllFees);
+    }
     public function firstName($firstName)
     {
         $this->collection->setFirstName($firstName);
@@ -305,7 +314,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
     }
     public function create()
     {
-        $collectionExecution = new Private_Chipdeals_MomoApi_Class_CollectionExecution($this->collection,  $this->Private_Chipdeals_MomoApi_Class_collectionUtils);
+        $collectionExecution = new Private_Chipdeals_MomoApi_Class_CollectionExecution($this->collection,  $this->collectionUtils);
         return $collectionExecution->start();
     }
 };
@@ -464,7 +473,11 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     private $endTimestampInSecond = "";
     private $webhookUrl = "";
     private $apiKey = "";
+    private $operatorReference = "";
     private $isCollection = false;
+    private $isWave = false;
+    private $fee = false;
+    private $merchantSupportFee = true;
 
     public function setReference($reference)
     {
@@ -653,6 +666,17 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
         return $this->apiKey;
     }
 
+    public function setOperatorReference($operatorReference)
+    {
+        $this->operatorReference = $operatorReference;
+        return $this;
+    }
+
+    public function getOperatorReference()
+    {
+        return $this->operatorReference;
+    }
+
     public function setIsCollection($isCollection)
     {
         $this->isCollection = $isCollection;
@@ -662,6 +686,39 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     public function getIsCollection()
     {
         return $this->isCollection;
+    }
+
+    public function setIsWave($isWave)
+    {
+        $this->isWave = $isWave;
+        return $this;
+    }
+
+    public function getIsWave()
+    {
+        return $this->isWave;
+    }
+
+    public function setFee($fee)
+    {
+        $this->fee = $fee;
+        return $this;
+    }
+
+    public function getFee()
+    {
+        return $this->fee;
+    }
+
+    public function setMerchantSupportFee($merchantSupportFee)
+    {
+        $this->merchantSupportFee = $merchantSupportFee;
+        return $this;
+    }
+
+    public function getMerchantSupportFee()
+    {
+        return $this->merchantSupportFee;
     }
 
     public function getArray()
@@ -685,6 +742,10 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
             "webhookUrl" => $this->webhookUrl,
             "apiKey" => $this->apiKey,
             "isCollection" => $this->isCollection,
+            "isWave" => $this->isWave,
+            "fee" => $this->fee,
+            "operatorReference" => $this->operatorReference,
+            "merchantSupportFee" => $this->merchantSupportFee,
         ];
     }
 };
@@ -782,6 +843,11 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
         return $this->transaction->getIsCollection();
     }
 
+    public function getOperatorReference()
+    {
+        return $this->transaction->getOperatorReference();
+    }
+
     public function getArray()
     {
         return [
@@ -800,6 +866,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
             "statusCode" => $this->transaction->getStatusCode(),
             "startTimestampInSecond" => $this->transaction->getStartTimestampInSecond(),
             "endTimestampInSecond" => $this->transaction->getEndTimestampInSecond(),
+            "operatorReference" => $this->transaction->getOperatorReference(),
             "isCollection" => $this->transaction->getIsCollection(),
         ];
     }
@@ -864,6 +931,9 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
             "currency" => $collection->getOriginalCurrency(),
             "amount" => $collection->getOriginalAmount(),
             "webhookUrl" => $collection->getWebhookUrl(),
+            "fee" => $collection->getFee(),
+            "merchantSupportFee" => $collection->getMerchantSupportFee(),
+            "isWave" => $collection->getIsWave(),
         ];
         $response = Private_Chipdeals_MomoApi_Class_Network::sendPostRequest($url, $requestData);
         Private_Chipdeals_MomoApi_Class_CollectionUtils::setCollectionValues($response, $collection);
@@ -897,6 +967,9 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
             $collection->setStatusCode($collectionResponse->statusMessageCode);
             $collection->setStartTimestampInSecond($collectionResponse->startTimestampInSecond);
             $collection->setEndTimestampInSecond($collectionResponse->endTimestampInSecond);
+            if (isset($collectionResponse->operatorReference)) {
+                $collection->setOperatorReference($collectionResponse->operatorReference);
+            }
         }
     }
 }
@@ -916,6 +989,7 @@ class Private_Chipdeals_MomoApi_Class_DepositUtils
             "currency" => $deposit->getOriginalCurrency(),
             "amount" => $deposit->getOriginalAmount(),
             "webhookUrl" => $deposit->getWebhookUrl(),
+            "isWave" => $deposit->getIsWave(),
         ];
         $response = Private_Chipdeals_MomoApi_Class_Network::sendPostRequest($url, $requestData);
         Private_Chipdeals_MomoApi_Class_DepositUtils::setDepositValues($response, $deposit);
@@ -948,6 +1022,9 @@ class Private_Chipdeals_MomoApi_Class_DepositUtils
             $deposit->setStatusCode($depositResponse->statusMessageCode);
             $deposit->setStartTimestampInSecond($depositResponse->startTimestampInSecond);
             $deposit->setEndTimestampInSecond($depositResponse->endTimestampInSecond);
+            if (isset($depositResponse->operatorReference)) {
+                $deposit->setOperatorReference($depositResponse->operatorReference);
+            }
         }
     }
 }
@@ -1051,6 +1128,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionUtils
             $transaction->setStatusCode($transactionResponse->statusMessageCode);
             $transaction->setStartTimestampInSecond($transactionResponse->startTimestampInSecond);
             $transaction->setEndTimestampInSecond($transactionResponse->endTimestampInSecond);
+            $transaction->setOperatorReference($transactionResponse->operatorReference);
             if ($transactionResponse->transactionType === "payment") {
                 $transaction->setIsCollection(true);
                 $transaction->setPhoneNumber($transactionResponse->senderPhoneNumber);
@@ -1082,6 +1160,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionUtils
         $transaction->setStatusCode($transactionInfo->statusMessageCode);
         $transaction->setStartTimestampInSecond($transactionInfo->startTimestampInSecond);
         $transaction->setEndTimestampInSecond($transactionInfo->endTimestampInSecond);
+        $transaction->setOperatorReference($transactionInfo->operatorReference);
         if ($transactionInfo->transactionType === "payment") {
             $transaction->setIsCollection(true);
             $transaction->setPhoneNumber($transactionInfo->senderPhoneNumber);
