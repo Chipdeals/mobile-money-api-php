@@ -12,7 +12,7 @@ $transaction = $momo
     ->amount(2000)
     ->currency("XOF")
     ->to('2250704628575')
-    ->withWave(false) //optional. Required only for CI wave operator
+    ->isWaveAccount(false) //optional. Required only for CI wave operator
     ->create();
 
 $status = $transaction->getStatus();

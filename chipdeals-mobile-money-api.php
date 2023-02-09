@@ -288,9 +288,9 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
         $this->collection->setPhoneNumber($phoneNumber);
         return $this;
     }
-    public function withWave($withWave = true)
+    public function isWaveAccount($isWaveAccount = true)
     {
-        $this->collection->setIsWave($withWave);
+        $this->collection->setIsWaveAccount($isWaveAccount);
         return $this;
     }
     public function setFee($fee, $userSupportAllFees = false)
@@ -411,9 +411,9 @@ class Private_Chipdeals_MomoApi_Class_DepositRequest
         $this->deposit->setPhoneNumber($phoneNumber);
         return $this;
     }
-    public function withWave($withWave = true)
+    public function isWaveAccount($isWaveAccount = true)
     {
-        $this->deposit->setIsWave($withWave);
+        $this->deposit->setIsWaveAccount($isWaveAccount);
         return $this;
     }
     public function webhook($webhook)
@@ -482,7 +482,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     private $apiKey = "";
     private $operatorReference = "";
     private $isCollection = false;
-    private $isWave = false;
+    private $isWaveAccount = false;
     private $fee = false;
     private $merchantSupportFee = true;
 
@@ -695,15 +695,15 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
         return $this->isCollection;
     }
 
-    public function setIsWave($isWave)
+    public function setIsWaveAccount($isWaveAccount)
     {
-        $this->isWave = $isWave;
+        $this->isWaveAccount = $isWaveAccount;
         return $this;
     }
 
-    public function getIsWave()
+    public function getIsWaveAccount()
     {
-        return $this->isWave;
+        return $this->isWaveAccount;
     }
 
     public function setFee($fee)
@@ -749,7 +749,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
             "webhookUrl" => $this->webhookUrl,
             "apiKey" => $this->apiKey,
             "isCollection" => $this->isCollection,
-            "isWave" => $this->isWave,
+            "isWaveAccount" => $this->isWaveAccount,
             "fee" => $this->fee,
             "operatorReference" => $this->operatorReference,
             "merchantSupportFee" => $this->merchantSupportFee,
@@ -940,7 +940,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
             "webhookUrl" => $collection->getWebhookUrl(),
             "fee" => $collection->getFee(),
             "merchantSupportFee" => $collection->getMerchantSupportFee(),
-            "isWave" => $collection->getIsWave(),
+            "isWave" => $collection->getIsWaveAccount(),
         ];
         $response = Private_Chipdeals_MomoApi_Class_Network::sendPostRequest($url, $requestData);
         Private_Chipdeals_MomoApi_Class_CollectionUtils::setCollectionValues($response, $collection);
@@ -996,7 +996,7 @@ class Private_Chipdeals_MomoApi_Class_DepositUtils
             "currency" => $deposit->getOriginalCurrency(),
             "amount" => $deposit->getOriginalAmount(),
             "webhookUrl" => $deposit->getWebhookUrl(),
-            "isWave" => $deposit->getIsWave(),
+            "isWave" => $deposit->getIsWaveAccount(),
         ];
         $response = Private_Chipdeals_MomoApi_Class_Network::sendPostRequest($url, $requestData);
         Private_Chipdeals_MomoApi_Class_DepositUtils::setDepositValues($response, $deposit);

@@ -11,7 +11,7 @@ $transaction = $momo
   ->amount(100)
   ->currency("XOF")
   ->from("2250704628575")
-  ->withWave(false) //optional. Required only for CI wave operator
+  ->isWaveAccount(true) //optional. Required only for CI wave operator
   ->firstName("Iyam")
   ->lastName("EVERICH")
   ->create();
