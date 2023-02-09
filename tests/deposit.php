@@ -11,7 +11,8 @@ $transaction = $momo
     ->deposit()
     ->amount(2000)
     ->currency("XOF")
-    ->to('22990630401')
+    ->to('2250704628575')
+    ->withWave(false) //optional. Required only for CI wave operator
     ->create();
 
 $status = $transaction->getStatus();
@@ -21,5 +22,6 @@ if ($status == "pending") {
     echo "<pre>";
     print_r($transaction->getArray());
 } else {
-    echo "transaction failed";
+    echo "transaction failed <br/><pre>";
+    print_r($transaction->getArray());
 }

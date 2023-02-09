@@ -291,11 +291,13 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
     public function withWave($withWave = true)
     {
         $this->collection->setIsWave($withWave);
+        return $this;
     }
     public function setFee($fee, $userSupportAllFees = false)
     {
         $this->collection->setFee($fee);
         $this->collection->setMerchantSupportFee(!$userSupportAllFees);
+        return $this;
     }
     public function firstName($firstName)
     {
@@ -407,6 +409,11 @@ class Private_Chipdeals_MomoApi_Class_DepositRequest
     public function to($phoneNumber)
     {
         $this->deposit->setPhoneNumber($phoneNumber);
+        return $this;
+    }
+    public function withWave($withWave = true)
+    {
+        $this->deposit->setIsWave($withWave);
         return $this;
     }
     public function webhook($webhook)
