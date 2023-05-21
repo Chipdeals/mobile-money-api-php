@@ -485,6 +485,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     private $isWaveAccount = false;
     private $fee = false;
     private $merchantSupportFee = true;
+    private $paymentLink = "";
 
     public function setReference($reference)
     {
@@ -728,6 +729,17 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
         return $this->merchantSupportFee;
     }
 
+    public function setPaymentLink($paymentLink)
+    {
+        $this->paymentLink = $paymentLink;
+        return $this;
+    }
+
+    public function getPaymentLink()
+    {
+        return $this->paymentLink;
+    }
+
     public function getArray()
     {
         return [
@@ -753,6 +765,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
             "fee" => $this->fee,
             "operatorReference" => $this->operatorReference,
             "merchantSupportFee" => $this->merchantSupportFee,
+            "paymentLink" => $this->paymentLink,
         ];
     }
 };
@@ -855,6 +868,11 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
         return $this->transaction->getOperatorReference();
     }
 
+    public function getPaymentLink()
+    {
+        return $this->transaction->getPaymentLink();
+    }
+
     public function getArray()
     {
         return [
@@ -875,6 +893,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
             "endTimestampInSecond" => $this->transaction->getEndTimestampInSecond(),
             "operatorReference" => $this->transaction->getOperatorReference(),
             "isCollection" => $this->transaction->getIsCollection(),
+            "paymentLink" => $this->transaction->getPaymentLink(),
         ];
     }
 };
@@ -976,6 +995,9 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
             $collection->setEndTimestampInSecond($collectionResponse->endTimestampInSecond);
             if (isset($collectionResponse->operatorReference)) {
                 $collection->setOperatorReference($collectionResponse->operatorReference);
+            }
+            if(isset($collectionResponse->paymentLink)){
+                $collection->setPaymentLink($collectionResponse->paymentLink);
             }
         }
     }
@@ -1143,6 +1165,9 @@ class Private_Chipdeals_MomoApi_Class_TransactionUtils
                 $transaction->setOperator($transactionResponse->senderOperator);
                 $transaction->setFirstName($transactionResponse->senderFirstName);
                 $transaction->setLastName($transactionResponse->senderLastName);
+                if(isset($transactionResponse->paymentLink)){
+                    $transaction->setPaymentLink($transactionResponse->paymentLink);
+                }
             } else {
                 $transaction->setIsCollection(false);
                 $transaction->setPhoneNumber($transactionResponse->recipientPhoneNumber);
