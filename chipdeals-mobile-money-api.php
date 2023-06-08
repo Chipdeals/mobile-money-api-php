@@ -293,6 +293,11 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
         $this->collection->setIsWaveAccount($isWaveAccount);
         return $this;
     }
+    public function useOtp($otp)
+    {
+        $this->collection->setOtp($otp);
+        return $this;
+    }
     public function setFee($fee, $userSupportAllFees = false)
     {
         $this->collection->setFee($fee);
@@ -483,6 +488,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     private $operatorReference = "";
     private $isCollection = false;
     private $isWaveAccount = false;
+    private $otp = "";
     private $fee = false;
     private $merchantSupportFee = true;
     private $paymentLink = "";
@@ -705,6 +711,17 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     public function getIsWaveAccount()
     {
         return $this->isWaveAccount;
+    }
+
+    public function setOtp($otp)
+    {
+        $this->otp = $otp;
+        return $this;
+    }
+
+    public function getOtp()
+    {
+        return $this->otp;
     }
 
     public function setFee($fee)
@@ -960,6 +977,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
             "fee" => $collection->getFee(),
             "merchantSupportFee" => $collection->getMerchantSupportFee(),
             "isWave" => $collection->getIsWaveAccount(),
+            "otp" => $collection->getOtp(),
         ];
         $response = Private_Chipdeals_MomoApi_Class_Network::sendPostRequest($url, $requestData);
         Private_Chipdeals_MomoApi_Class_CollectionUtils::setCollectionValues($response, $collection);
