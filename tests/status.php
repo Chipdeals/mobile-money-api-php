@@ -11,6 +11,7 @@ $momo->setApiKey("test_FOdigzgSopV8GZggZa89");
 $transaction = $momo->getStatus("a0903015-a86d-46c3-98ce-bb36639d6d09");
 
 echo "reference: " . $transaction->getReference() . "<br/>";
+echo "merchantOrderId: " . $transaction->getMerchantOrderId() . "<br/>";
 echo "phoneNumber: " . $transaction->getPhoneNumber() . "<br/>";
 echo "countryCode: " . $transaction->getCountryCode() . "<br/>";
 echo "operator: " . $transaction->getOperator() . "<br/>";

@@ -11,9 +11,10 @@ $transaction = $momo
   ->amount(100)
   ->currency("XOF")
   ->from("2250704628575")
-  ->isWaveAccount(false) //optional. Required only for CI wave operator
   ->firstName("Iyam")
   ->lastName("EVERICH")
+  ->isWaveAccount(false) //optional. Required only for CI wave operator
+  ->merchantOrderId("collection-test00001") //optional. If added we will check if it is uniq for your account
   ->create();
 
 $status = $transaction->getStatus();

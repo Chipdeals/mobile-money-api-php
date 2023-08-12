@@ -273,6 +273,11 @@ class Private_Chipdeals_MomoApi_Class_CollectionRequest
     }
 
 
+    public function merchantOrderId($merchantOrderId)
+    {
+        $this->collection->setMerchantOrderId($merchantOrderId);
+        return $this;
+    }
     public function amount($amount)
     {
         $this->collection->setOriginalAmount($amount);
@@ -401,6 +406,11 @@ class Private_Chipdeals_MomoApi_Class_DepositRequest
     }
 
 
+    public function merchantOrderId($merchantOrderId)
+    {
+        $this->deposit->setMerchantOrderId($merchantOrderId);
+        return $this;
+    }
     public function amount($amount)
     {
         $this->deposit->setOriginalAmount($amount);
@@ -469,6 +479,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionController
 class Private_Chipdeals_MomoApi_Class_TransactionData
 {
     private $reference = "";
+    private $merchantOrderId = "";
     private $phoneNumber = "";
     private $countryCode = "";
     private $operator = "";
@@ -502,6 +513,17 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     public function getReference()
     {
         return $this->reference;
+    }
+
+    public function setMerchantOrderId($merchantOrderId)
+    {
+        $this->merchantOrderId = $merchantOrderId;
+        return $this;
+    }
+
+    public function getMerchantOrderId()
+    {
+        return $this->merchantOrderId;
     }
 
     public function setPhoneNumber($phoneNumber)
@@ -761,6 +783,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionData
     {
         return [
             "reference" => $this->reference,
+            "merchantOrderId" => $this->merchantOrderId,
             "phoneNumber" => $this->phoneNumber,
             "countryCode" => $this->countryCode,
             "operator" => $this->operator,
@@ -803,6 +826,11 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
     public function getReference()
     {
         return $this->transaction->getReference();
+    }
+
+    public function getMerchantOrderId()
+    {
+        return $this->transaction->getMerchantOrderId();
     }
 
     public function getPhoneNumber()
@@ -894,6 +922,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionResponse
     {
         return [
             "reference" => $this->transaction->getReference(),
+            "merchantOrderId" => $this->transaction->getMerchantOrderId(),
             "phoneNumber" => $this->transaction->getPhoneNumber(),
             "currency" => $this->transaction->getCurrency(),
             "operator" => $this->transaction->getOperator(),
@@ -968,6 +997,8 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
         $url = "https://apis.chipdeals.me/momo/requestPayment?apikey=";
         $url .= $collection->getApiKey();
         $requestData = [
+            "requestSource" => "phpLib",
+            "merchantOrderId" => $collection->getMerchantOrderId(),
             "senderFirstName" => $collection->getFirstName(),
             "senderLastName" => $collection->getLastName(),
             "senderPhoneNumber" => $collection->getPhoneNumber(),
@@ -997,6 +1028,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
         if ($collectionResponseFound) {
             $collectionResponse = $response["data"]->payment;
             $collection->setReference($collectionResponse->reference);
+            $collection->setMerchantOrderId($collectionResponse->merchantOrderId);
             $collection->setPhoneNumber($collectionResponse->senderPhoneNumber);
             $collection->setCountryCode($collectionResponse->senderCountryCode);
             $collection->setOperator($collectionResponse->senderOperator);
@@ -1023,7 +1055,7 @@ class Private_Chipdeals_MomoApi_Class_CollectionUtils
 
 
 /**
- * Utils/Deposit
+ * Utils/DepositUtils.php
  */
 class Private_Chipdeals_MomoApi_Class_DepositUtils
 {
@@ -1032,6 +1064,8 @@ class Private_Chipdeals_MomoApi_Class_DepositUtils
         $url = "https://apis.chipdeals.me/momo/deposit?apikey=";
         $url .= $deposit->getApiKey();
         $requestData = [
+            "requestSource" => "phpLib",
+            "merchantOrderId" => $deposit->getMerchantOrderId(),
             "recipientPhoneNumber" => $deposit->getPhoneNumber(),
             "currency" => $deposit->getOriginalCurrency(),
             "amount" => $deposit->getOriginalAmount(),
@@ -1166,6 +1200,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionUtils
         if ($transactionResponseFound) {
             $transactionResponse = $response["data"]->transaction;
             $transaction->setReference($transactionResponse->reference);
+            $transaction->setMerchantOrderId($transactionResponse->merchantOrderId);
             $transaction->setOriginalCurrency($transactionResponse->originalCurrency);
             $transaction->setCurrency($transactionResponse->currency);
             $transaction->setOriginalAmount($transactionResponse->originalAmount);
@@ -1201,6 +1236,7 @@ class Private_Chipdeals_MomoApi_Class_TransactionUtils
 
         $transaction = new Private_Chipdeals_MomoApi_Class_TransactionData();
         $transaction->setReference($transactionInfo->reference);
+        $transaction->setMerchantOrderId($transactionInfo->merchantOrderId);
         $transaction->setOriginalCurrency($transactionInfo->originalCurrency);
         $transaction->setCurrency($transactionInfo->currency);
         $transaction->setOriginalAmount($transactionInfo->originalAmount);

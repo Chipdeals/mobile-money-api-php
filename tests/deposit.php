@@ -13,6 +13,7 @@ $transaction = $momo
     ->currency("XOF")
     ->to('2250704628575')
     ->isWaveAccount(false) //optional. Required only for CI wave operator
+    ->merchantOrderId("deposit-test00001") //optional. If added we will check if it is uniq for your account
     ->create();
 
 $status = $transaction->getStatus();

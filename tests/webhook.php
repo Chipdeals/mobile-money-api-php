@@ -10,6 +10,7 @@ $momo = new Momo();
 $transaction = $momo->parseWebhookData($_POST);
 
 echo "reference: " . $transaction->getReference() . "<br/>";
+echo "merchantOrderId: " . $transaction->getMerchantOrderId() . "<br/>";
 echo "phoneNumber: " . $transaction->getPhoneNumber() . "<br/>";
 echo "countryCode: " . $transaction->getCountryCode() . "<br/>";
 echo "operator: " . $transaction->getOperator() . "<br/>";
